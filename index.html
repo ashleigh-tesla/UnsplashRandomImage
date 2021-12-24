@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Display Random Image</title>
+</head>
+<style>
+    body {
+        background: repeating-radial-gradient(navy, blue, indigo, purple, violet);
+        text-align: center;
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #unsplashImage {
+        max-height: 500px;
+        border: 20px solid black;
+        transform: rotate(3deg);
+    }
+    
+    h1 {
+        font-size: 56px;
+    }
+    
+    .imageDetails {
+        background: black;
+        margin-top: 50px;
+        padding: 10px;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        width: fit-content;
+    }
+    
+    .imageDetails a {
+        color: #fff;
+    }
+    
+    .imageDetails a:hover {
+        color: yellow;
+    }
+</style>
+
+<body>
+    <h1>Random Unsplash Image</h1>
+    <div class="imageContainer">
+        <a id='imagelink' href='#'>
+            <img alt='' id='unsplashImage' />
+        </a>
+    </div>
+    <p class='imageDetails'>Photo by <a id='creator' href='#' target='_blank'>NAME</a> on <a href='https://www.unsplash.com' target='_blank'>Unsplash</a>!</p>
+</body>
+<script>
+    let clientID = "MWpGDXq1D7vkEawvxesUXG19MfF61tEcMQcExO9qlAc"
+    let endpoint = `https://api.unsplash.com/photos/random/?client_id=${clientID}`
+
+    let imageElement = document.querySelector('#unsplashImage')
+    let imageLink = document.querySelector('#imageLink')
+    let creator = document.querySelector('#creator')
+
+    fetch(endpoint)
+        .then((response) => response.json())
+        .then((jsonData) => {
+            imageElement.src = jsonData.urls.regular
+            imageLink.setAttribute("href", jsonData.links.html)
+
+            creator.innerText = jsonData.user.name
+            creator.setAttribute("href", jsonData.user.portfolio_url)
+        })
+        .catch((error) => {
+            console.log('Error: ' + error)
+        })
+</script>
+
+</html>
